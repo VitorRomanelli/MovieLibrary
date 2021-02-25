@@ -1,6 +1,12 @@
 <template>
   <v-container fill-height>
     <v-layout align-center justify-center fill-height>
+      <v-snackbar v-model="snackbarSuccess" :timeout="3000">
+        Movie successfully registered!
+      </v-snackbar>
+      <v-snackbar v-model="snackbarFailed" :timeout="3000">
+        It was not possible to register the film!
+      </v-snackbar>
       <v-flex xs12 sm8 md6>
         <v-card class="elevation-12">
           <v-card-text>
@@ -40,8 +46,8 @@
                 v-model="classification"
                 color="primary"
                 label="Classification"
-                min="1"
-                max="30"
+                min="6"
+                max="28"
                 thumb-label
                 required
               ></v-slider>
@@ -73,6 +79,8 @@
 </template>
 
 <script>
+import api from "../services/api";
+
 export default {
   name: "Register",
   data() {
@@ -97,28 +105,41 @@ export default {
       classification: 0,
       images: null,
       imageRules: [v => !!v || "Image is required"],
-      selectedImages: null
+      selectedImages: [],
+      snackbarSuccess: false,
+      snackbarFailed: false
     };
   },
   methods: {
-    submit() {
+    async submit() {
       if (this.$refs.form.validate()) {
-        console.log(this.image);
+        try {
+          const movie = {
+            Title: this.title,
+            Description: this.description,
+            Classification: this.classification.toString(),
+            Gender: this.gender,
+            Images: this.selectedImages
+          };
+          const response = await api.post("/movie", movie);
+          console.log(response);
+          this.snackbarFailed = true;
+          this.$router.push("/");
+        } catch {
+          this.snackbarFailed = true;
+        }
       } else {
         console.log("Tem algo errado");
       }
     },
     setImage() {
-      const imgs = [];
       this.images.map(image => {
         var reader = new FileReader();
         reader.readAsDataURL(image);
         reader.onload = () => {
-          imgs.push(reader.result);
+          this.selectedImages.push({ Url: reader.result });
         };
       });
-      this.selectedImages = imgs;
-      console.log(this.selectedImages);
     }
   }
 };

@@ -1,21 +1,21 @@
 <template>
   <v-card class="mx-auto" shaped max-width="420" dark>
-    <v-img :src="movie.imgs[0]" height="440px"></v-img>
+    <v-img :src="movie.images[0].url" height="440px"></v-img>
 
     <v-card-title>
-      {{ movie.Title }}
+      {{ movie.title }}
     </v-card-title>
 
     <v-card-subtitle>
-      {{ movie.Gender }}
+      {{ movie.gender }}
     </v-card-subtitle>
 
     <v-card-text>
-      {{ movie.Classification }}
+      {{ movie.classification }}
     </v-card-text>
 
     <v-card-actions>
-      <v-btn color="blue darken-1" light @click="goTo(`/about/${movie.Id}`)">
+      <v-btn color="blue darken-1" light @click="goTo(`/about/${movie.id}`)">
         About
       </v-btn>
 
@@ -31,7 +31,7 @@
         <v-divider></v-divider>
 
         <v-card-text>
-          {{ movie.Description }}
+          {{ movie.description }}
         </v-card-text>
       </div>
     </v-expand-transition>

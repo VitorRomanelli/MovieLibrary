@@ -7,17 +7,17 @@
     <v-card class="ma-5" max-width="100%">
       <v-carousel :show-arrows="true" style="height: 100%">
         <v-carousel-item
-          v-for="(img, i) in movie.imgs"
+          v-for="(image, i) in movie.images"
           :key="i"
-          :src="img"
+          :src="image.url"
         ></v-carousel-item>
       </v-carousel>
     </v-card>
     <v-card dark class="" width="70%">
-      <v-card-title>{{ movie.Title }}</v-card-title>
-      <v-card-subtitle>{{ movie.Gender }}</v-card-subtitle>
-      <v-card-text>{{ movie.Classification }}</v-card-text>
-      <v-card-text>{{ movie.Description }}</v-card-text>
+      <v-card-title>{{ movie.title }}</v-card-title>
+      <v-card-subtitle>{{ movie.gender }}</v-card-subtitle>
+      <v-card-text>{{ movie.classification }}</v-card-text>
+      <v-card-text>{{ movie.description }}</v-card-text>
     </v-card>
   </div>
 </template>
@@ -28,7 +28,7 @@ export default {
   computed: {
     movie() {
       const movies = this.$store.state.movies;
-      return movies.find(movie => movie.Id == this.$route.params.id);
+      return movies.find(movie => movie.id == this.$route.params.id);
     }
   }
 };

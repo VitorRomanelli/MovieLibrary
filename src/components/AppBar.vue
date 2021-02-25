@@ -65,7 +65,7 @@
       </v-btn>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawer" absolute temporary>
+    <v-navigation-drawer app v-model="drawer" absolute temporary>
       <v-list nav dense>
         <v-list-item-group active-class="text--accent-4">
           <v-list-item to="/">
@@ -90,13 +90,17 @@
 <script>
 export default {
   name: "AppBar",
-  mounted() {
-    this.movies.map(movie => {
-      this.items.push(movie.Title);
+  created() {
+    this.$store.dispatch("getMovies").then(() => {
+      this.movies = this.$store.state.movies;
+      this.$store.state.movies.map(movie => {
+        this.items.push(movie.title);
+      });
     });
   },
   data() {
     return {
+      movies: [],
       drawer: false,
       loading: false,
       items: [],
@@ -107,10 +111,10 @@ export default {
     searchMovie() {
       console.log(this.search);
       const searchedMovie = this.movies.find(
-        movie => movie.Title.toLowerCase() == this.search.toLowerCase()
+        movie => movie.title.toLowerCase() == this.search.toLowerCase()
       );
 
-      this.$router.push(`/about/${searchedMovie.Id}`);
+      this.$router.push(`/about/${searchedMovie.id}`);
     },
     goToHome() {
       if (this.$route.name != "Home") {
@@ -121,12 +125,8 @@ export default {
   computed: {
     searchedMovies() {
       return this.movies.filter(
-        movie => movie.Title.toLowerCase() == this.search.toLowerCase()
+        movie => movie.title.toLowerCase() == this.search.toLowerCase()
       );
-    },
-    movies() {
-      this.$store.dispatch("getMovies");
-      return this.$store.state.movies;
     }
   }
 };

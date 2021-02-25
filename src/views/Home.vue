@@ -12,6 +12,14 @@
 import Movie from "../components/Movie";
 export default {
   name: "Home",
+  created() {
+    this.$store.dispatch("getMovies");
+  },
+  data() {
+    return {
+      page: 1
+    };
+  },
   components: {
     Movie
   },
